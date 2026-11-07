@@ -1,10 +1,9 @@
-class AppErrror(Exception):
+class AppError(Exception):
     status_code = 500
 
-class EmailTakenError(AppErrror):
+class EmailTakenError(AppError):
     status_code = 409
     detail = "Email already taken"
 
-class InvalidCredentialsError(AppErrror):
+class InvalidCredentialsError(AppError):
     status_code = 401
-    detail = "Invalid credentials"

@@ -49,6 +49,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        version_table="alembic_version_auth",
     )
 
     with context.begin_transaction():
@@ -56,7 +57,13 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    # separate version table so this service doesn't collide with
+    # product-catalogue-service migrations sharing the same database
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        version_table="alembic_version_auth",
+    )
 
     with context.begin_transaction():
         context.run_migrations()
